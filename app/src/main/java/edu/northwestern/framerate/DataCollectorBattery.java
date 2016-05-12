@@ -1,0 +1,25 @@
+package edu.northwestern.framerate;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
+
+/**
+ * Created by B on 3/30/2016.
+ */
+public class DataCollectorBattery {
+    private Context context;
+
+    public DataCollectorBattery(Context context) {
+        this.context = context;
+    }
+
+    public double getBatteryLevel(){
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = context.registerReceiver(null, ifilter);
+        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        return level / (double) scale;
+    }
+}
